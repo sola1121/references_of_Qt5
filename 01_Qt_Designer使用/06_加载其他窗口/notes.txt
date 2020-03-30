@@ -1,0 +1,11 @@
+这里的加载其他窗口, 是让一个QWidget子类窗口出现在QMainWindow子类的窗口中.
+
+就相当于将在窗口中创建一个控件.
+
+class ChildrenForm(QWidget, Ui_ChildrenForm):
+    """子窗口类"""
+    def __init__(self):
+        super(ChildrenForm, self).__init__()
+        self.setupUi(self)
+
+可以看到实例继承的就是QWidget

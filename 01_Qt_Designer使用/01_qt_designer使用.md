@@ -233,7 +233,11 @@ Ignored: 无视窗口控件的sizeHint和minisizeHint所提示的尺寸, 按照�
 
 ## 菜单与工具栏
 
-MainWindow即主窗口, 主要包含菜单栏, 工具栏, 任务栏等. 
+MainWindow即主窗口, 主要包含菜单栏, 工具栏, 任务栏等.
+
+菜单栏, 工具栏等, 在使用时, 应该绑定动作, 这个是可以在Qt Designer中的动作编辑器可以指定的. 不绑定一个动作给他, 那么创建菜单栏, 工具栏就没有什么意义了.
+
+Qt Designer中, 创建了一个菜单选项, 就会默认的给他绑定一个动作. 而工具栏, 相当于一个给动作的容器, 直接向其中拖入动作就是他的使用.
 
 ### 菜单栏
 
@@ -263,4 +267,29 @@ MainWindow即主窗口, 主要包含菜单栏, 工具栏, 任务栏等.
 
     self.statusBar = QtWidgets.QStatusBar(MainWindow)
     self.statusBar.setObjectName("statusBar")
-    MainWindow.setStatusBar(self.statusBar
+    MainWindow.setStatusBar(self.statusBar)
+
+## 打包资源文件
+
+PyQt5生成的应用程序引用图片资源主要有两种方法
++ 将资源文件转换为Python文件, 然后引用Python文件
++ 在程序中通过相对路径引用外部图片
+
+### 使用Qt Designer转换资源为Python
+
+在Qt Designer中设计界面时是不能直接加入图片和图标等资源的, 而是需要在PyQt开发目录下编写.qrc文件.
+
+如下创建一个.qrc文件
+
+    <rcc version="1.0">
+        <qresource>
+        </qresource>
+    </rcc>
+
+进入资源管理界面, 然后使用资源管理打开.qrc
+
+![resource](./img/13_resource_manager.png)
+
+进行编辑, 按需添加要使用的文件, 注意, 必须在项目目录或其子目录之中
+
+![edit_resource](./img/14_edit_resource.png)
