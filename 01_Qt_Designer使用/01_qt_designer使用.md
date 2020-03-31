@@ -241,7 +241,7 @@ Qt Designer中, 创建了一个菜单选项, 就会默认的给他绑定一个�
 
 ### 菜单栏
 
-双击菜单栏上的"在这里输入", 然后输入文字, 最后按回车键即可生成菜单. 对于一级菜单, 可以通过输入"文件(&F)"和"编辑(&E)"来加入菜单的快捷键. **注意:** 要按回车键来确认菜单的输入.
+双击菜单栏上的"在这里输入", 然后输入文字, 最后按回车键即可生成菜单. 对于一级菜单, 可以通过输入"文件(&F)"和"编辑(&E)"来加入菜单的快捷键. 这里的(&.)会自动补上Alt+.的快捷方式. **注意:** 要按回车键来确认菜单的输入.
 
 在 "窗体" -> "预览" 可以快速预览所生成的窗口效果.
 
@@ -293,3 +293,49 @@ PyQt5生成的应用程序引用图片资源主要有两种方法
 进行编辑, 按需添加要使用的文件, 注意, 必须在项目目录或其子目录之中
 
 ![edit_resource](./img/14_edit_resource.png)
+
+此时的.qrc文件, 会发现自己添加的资源相对路径已经在其中记录了. 当然也可以完全手写资源的.qrc文件, 在Qt Designer中导入就行了.
+
+    <RCC>
+    <qresource prefix="pics">
+        <file>source/pics/python-96.png</file>
+        <file>source/pics/golang-96.png</file>
+        <file>source/pics/javascript-96.png</file>
+        <file>source/pics/c-96.png</file>
+    </qresource>
+    </RCC>
+
+### 使用资源中的图片
+
+对具有pixmap, icon等可以使用图片的属性的控件, 可以向其插入图片. 插入图片有两种方式, **一是**使用资源文件中的图片, **二是**通过浏览查询插入外部图片地址的方式. 其最终会变为`QtGui.QPixmap`, `QtGui.QIcon`对象被使用.
+
+QLabel控件对象的pixmap
+
+![pixmap](./img/15_QLabel_pixmap.png)
+
+    self.pythonLabel = QtWidgets.QLabel(winForm)
+    self.pythonLabel.setGeometry(QtCore.QRect(10, 20, 91, 91))
+    self.pythonLabel.setText("")
+    self.pythonLabel.setPixmap(QtGui.QPixmap(":/pics/source/pics/python-96.png"))
+    self.pythonLabel.setObjectName("pythonLabel")
+
+QPushButton控件对象的icon
+
+![icon](./img/16_pushButton_icon.png)
+
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/pics/source/pics/python-96.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pythonButton.setIcon(icon)
+        self.pythonButton.setObjectName("pythonButton")
+
+### pyrcc5编译资源文件
+
+因为使用Qt Designer导入资源文件时默认是加"_rc"的, 为了与Qt Designer保持一致, 也添加一个_rc. 在pyuic5编译使用了资源文件的.ui文件时, 会将其对应的资源文件在最后以python包的形式导入, 可能这时候该.qrc还没有被编译, 但这是必须的, 因为最终使用的时候, 肯定也是需要该资源文件的. 当然, 也可以手动导入编译好的资源py文件, 可以在自己喜欢的地方导入.
+
+`pyrcc5`使用方法和pyuic5类似, 其将资源文件.qrc与其对应的资源合并转换为.py文件.
+
+    pyrcc5 apprcc.qrc -o apprcc_rc.py
+
+其中所有资源文件的内容都被转换为了bytes数据变量.
+
+最后导入 import apprcc_rc, 编译的话, 默认是在对应的ui的py文件最后就有的.

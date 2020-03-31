@@ -1,8 +1,8 @@
 <RCC>
   <qresource prefix="pics">
-    <file>source/pics/c-96.png</file>
+    <file>source/pics/python-96.png</file>
     <file>source/pics/golang-96.png</file>
     <file>source/pics/javascript-96.png</file>
-    <file>source/pics/python-96.png</file>
+    <file>source/pics/c-96.png</file>
   </qresource>
 </RCC>

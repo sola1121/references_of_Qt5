@@ -6,13 +6,172 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>498</width>
+    <height>201</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <widget class="QLabel" name="pythonLabel">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>20</y>
+     <width>91</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="apprcc.qrc">:/pics/source/pics/python-96.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QLabel" name="GolangLabel">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>10</y>
+     <width>101</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="apprcc.qrc">:/pics/source/pics/golang-96.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QLabel" name="JSLabel">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>20</y>
+     <width>101</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="apprcc.qrc">:/pics/source/pics/javascript-96.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QLabel" name="CLabel">
+   <property name="geometry">
+    <rect>
+     <x>390</x>
+     <y>20</y>
+     <width>91</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="apprcc.qrc">:/pics/source/pics/c-96.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>130</y>
+     <width>471</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QPushButton" name="pythonButton">
+      <property name="text">
+       <string>python</string>
+      </property>
+      <property name="icon">
+       <iconset resource="apprcc.qrc">
+        <normaloff>:/pics/source/pics/python-96.png</normaloff>:/pics/source/pics/python-96.png</iconset>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <spacer name="horizontalSpacer">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <widget class="QPushButton" name="golangButton">
+      <property name="text">
+       <string>golang</string>
+      </property>
+      <property name="icon">
+       <iconset resource="apprcc.qrc">
+        <normaloff>:/pics/source/pics/golang-96.png</normaloff>:/pics/source/pics/golang-96.png</iconset>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <spacer name="horizontalSpacer_2">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <widget class="QPushButton" name="javascriptButton">
+      <property name="text">
+       <string>javascript</string>
+      </property>
+      <property name="icon">
+       <iconset resource="apprcc.qrc">
+        <normaloff>:/pics/source/pics/javascript-96.png</normaloff>:/pics/source/pics/javascript-96.png</iconset>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <spacer name="horizontalSpacer_3">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <widget class="QPushButton" name="cButton">
+      <property name="text">
+       <string>c</string>
+      </property>
+      <property name="icon">
+       <iconset resource="apprcc.qrc">
+        <normaloff>:/pics/source/pics/c-96.png</normaloff>:/pics/source/pics/c-96.png</iconset>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
  </widget>
  <resources>
   <include location="apprcc.qrc"/>
