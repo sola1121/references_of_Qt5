@@ -1,8 +1,9 @@
 import sys
 
+import PyQt5
 import PyQt5.QtWidgets as pck
 
-output_package = pck.QDesktopWidget
+output_package = PyQt5.QtCore
 
 ori_out = sys.stdout
 

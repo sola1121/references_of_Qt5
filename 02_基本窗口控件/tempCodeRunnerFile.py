@@ -1,2 +1,0 @@
-etText()
-        # self.closeButton.setIcon()
