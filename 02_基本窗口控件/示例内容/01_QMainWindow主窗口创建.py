@@ -17,7 +17,7 @@ class MainWin(QMainWindow):
 if __name__ == "__main__":
 
     app = QApplication(sys.argv)
-    app.setWindowIcon(QIcon("./sources/icons/android_01.ico"))   # 设置窗口图标
+    app.setWindowIcon(QIcon("02_基本窗口控件/示例内容/sources/icons/android_01.ico"))   # 设置窗口图标
     win = MainWin()
     win.show()
     sys.exit(app.exec())

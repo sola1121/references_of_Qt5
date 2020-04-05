@@ -13,7 +13,7 @@ class MainWin(QMainWindow):
         # 创建一个按钮, 并绑定单击事件
         self.closeButton = QPushButton()
         self.closeButton.setText("关闭主窗口")
-        self.closeButton.setIcon(QIcon("./sources/icons/android_02.ico"))
+        self.closeButton.setIcon(QIcon("02_基本窗口控件/示例内容/sources/icons/android_02.ico"))
         self.closeButton.clicked.connect(self.on_click_close_button)
 
         # 设置窗口中心的控件, 先创建窗口使用的布局管理器, 然后让其变为窗口控件的一部分, 最后将其作为主窗口控件

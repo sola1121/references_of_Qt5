@@ -3,7 +3,7 @@ import sys
 import PyQt5
 import PyQt5.QtWidgets as pck
 
-output_package = PyQt5.QtCore
+output_package = PyQt5.QtCore.Qt
 
 ori_out = sys.stdout
 
