@@ -4,6 +4,7 @@
 
 - [笔记](#笔记)
     - [将ui文件转换为py文件](#将ui文件转换为py文件)
+    - [直接使用ui文件](#直接使用ui文件)
     - [布局管理入门](#布局管理入门)
         - [布局管理器进行布局](#布局管理器进行布局)
         - [使用容器控件进行布局](#使用容器控件进行布局)
@@ -43,6 +44,47 @@
 由创建的ui文件编译而来的py文件, 叫做界面文件, 然后一般还会在创建一个py文件调用这个界面文件, 该py文件就叫做逻辑文件.
 
 之后所有的逻辑都在这个逻辑文件中写, 实现了显示与业务逻辑的分离.
+
+在ui文件转换到的py文件中, 其ui类会包含一个setupUi()方法, 在业务逻辑中, 继承ui类时, 直接使用该方法就可以完成界面的布置了.
+
+## 直接使用ui文件
+
+PyQt5.uic.loadUi() 方法
+
+    import sys
+    from PyQt5.QtWidgets import QWidget, QApplication
+    from PyQt5 import uic
+
+    app = QApplication(sys.argv)
+    win = QWidget()
+    uic.loadUi("QWidgetWindow.ui", win)   # 载入ui文件
+    win.show()
+
+    sys.exit(app.exec())
+
+PySide2.QtUiTools.QUiLoader() 方法
+
+    import sys
+    from PySide2.QtUiTools import QUiLoader
+    from PySide2.QtWidgets import QApplication
+    from PySide2.QtCore import QFile
+
+    if __name__ == "__main__":
+        app = QApplication(sys.argv)
+
+        ui_file = QFile("QWidgetWindow.ui")   # 读取ui文件
+        ui_file.open(QFile.ReadOnly)
+
+        loader = QUiLoader()
+        window = loader.load(ui_file)   # 载入ui文件
+        ui_file.close()
+        window.show()
+
+        sys.exit(app.exec_())
+
+**注意1** 文件载入的相对位置应该以项目所在根目录开始.
+
+**注意2** ui中使用的窗口控件要与调用文件中调用其的控件对象一样.
 
 ## 布局管理入门
 
