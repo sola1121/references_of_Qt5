@@ -18,8 +18,8 @@ class SliderDemo(QWidget):
 
         self.slider = QSlider(Qt.Horizontal)
         self.slider.setRange(0, 50)
-        self.slider.setTickPosition(QSlider.TicksBelow)
-        self.slider.setTickInterval(5)
+        self.slider.setTickPosition(QSlider.TicksBelow)   # 刻度在下
+        self.slider.setTickInterval(5)   # 刻度的间隔
         self.slider.valueChanged.connect(self.info_slider)
 
         vbox.addWidget(self.slider)

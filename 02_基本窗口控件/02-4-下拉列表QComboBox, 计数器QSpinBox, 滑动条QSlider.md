@@ -1,5 +1,20 @@
 # 笔记
 
+<!-- TOC -->
+
+- [笔记](#笔记)
+    - [QComboBox](#qcombobox)
+        - [QComboBox常用方法](#qcombobox常用方法)
+        - [QComboBox常用信号](#qcombobox常用信号)
+    - [QSpinBox, QDoubleSpinBox](#qspinbox-qdoublespinbox)
+        - [QSpinbox, QDoubleSpinBox常用的方法](#qspinbox-qdoublespinbox常用的方法)
+        - [QSpinBox, QDoubleSpinBox常用信号](#qspinbox-qdoublespinbox常用信号)
+    - [QSlider](#qslider)
+        - [QSlider常用方法](#qslider常用方法)
+        - [QSlider常用信号](#qslider常用信号)
+
+<!-- /TOC -->
+
 下拉列表QComboBox, 计数器QSpinBox, 滑动条QSlider
 
 ## QComboBox
