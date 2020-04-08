@@ -1,18 +1,31 @@
 # 笔记
 
+<!-- TOC -->
+
+- [笔记](#笔记)
+    - [QLabel](#qlabel)
+        - [QLabel中常用的方法](#qlabel中常用的方法)
+        - [QLbel中常用的信号事件](#qlbel中常用的信号事件)
+    - [文本框类控件](#文本框类控件)
+        - [QLineEdit](#qlineedit)
+            - [QLineEdit类中常用方法](#qlineedit类中常用方法)
+            - [QLineEdit常用信号事件](#qlineedit常用信号事件)
+        - [QTextEdit](#qtextedit)
+            - [QTextEdit常用方法](#qtextedit常用方法)
+
+<!-- /TOC -->
+
+标签QLabel, 单行文本编辑框QLineEdit, 多行文本编辑框QTextEdit, 其还支持HTML
+
 ## QLabel
 
 `PyQt5.QtWidgets.QLabel`, 作为一个占位符可以显示不可编辑的文本或图片, 也可以放置一个GIF动图, 还可以被用作提示标记. 其内容可以是纯文本, 链接, 富文本. 就是界面中的标签类, 它继承自QFrame类.
 
-    QObject
-        |
-        +-QPaintDevice
-                |
-                +-QWidget
-                    |
-                    +-QFrame
-                        |
-                        +-QLabel
+    QWidget
+      |
+      +-QFrame
+          |
+          +-QLabel
 
 ### QLabel中常用的方法
 
@@ -26,6 +39,7 @@ setAlignment() : 按固定值方式对齐文本
   + PyQt5.QtCore.Qt.AlignVCenter , 垂直方向居中对齐
 
 setIndent() : 设置文本缩进值  
+picture() : 返回图片  
 setPixmap() : 设置QLabel为一个QPixmap图片  
 text() : 返回QLabel文本内容  
 setText() : 设置QLabel文本内容, 支持富文本, 超链接  
@@ -51,6 +65,14 @@ linkHovered : 当鼠标指针滑过标签中嵌入的超链接时, 需要用槽�
 ## 文本框类控件
 
 `PyQt5.QtWidgets.QLineEdit` 类, 单行文本框控件; `PyQt5.QtWidgets.QTextEdit` 类, 文本框控件.
+
+    QWidget
+      |
+      +-QLineEdit
+
+    QWidget
+      |
+      +-QTextEdit
 
 ### QLineEdit
 

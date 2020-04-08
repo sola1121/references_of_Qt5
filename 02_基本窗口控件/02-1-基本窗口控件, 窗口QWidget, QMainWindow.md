@@ -1,5 +1,27 @@
 # 笔记
 
+<!-- TOC -->
+
+- [笔记](#笔记)
+    - [窗口类型介绍](#窗口类型介绍)
+    - [一些常用的窗口控件](#一些常用的窗口控件)
+        - [PyQt5.QtWidgets](#pyqt5qtwidgets)
+        - [PyQt5.QtCore](#pyqt5qtcore)
+        - [PyQt5.QtGui](#pyqt5qtgui)
+    - [QWidget](#qwidget)
+        - [窗口坐标系统](#窗口坐标系统)
+        - [常用的几何机构](#常用的几何机构)
+            - [QWidget不包含边框的常用函数](#qwidget不包含边框的常用函数)
+            - [QWidget包含边框的常用函数](#qwidget包含边框的常用函数)
+    - [QMain Window](#qmain-window)
+        - [QMainWindow类中比较重要的方法](#qmainwindow类中比较重要的方法)
+
+<!-- /TOC -->
+
+一些常用的控件, 固定的Qt参数. QtGui, QtCore.
+
+可以被用作主窗口的控件QWidget, QMainWindow. 窗口的排版功能Layout(布局)管理器.
+
 ## 窗口类型介绍
 
 在PyQt中把没有嵌入到其他控件中的控件称为窗口, 一般窗口都有边框, 标题. 窗口是指程序的整体界面, 可以包含标题栏, 菜单栏, 工具栏, 关闭按钮, 最小化按钮, 最大化按钮等; 控件是指按钮, 复选框, 文本框, 表格,进度条等这些组成程序的基本元素.
@@ -16,7 +38,7 @@ QDialog 是对话框窗口的基类. 对话框主要用来执行短期任务, �
 
 ## 一些常用的窗口控件
 
-### PyQt5.QtWidget
+### PyQt5.QtWidgets
 
 QApplication.instance() 方法, 这是一个类方法, 返回应用对象的实例, 这样就可以在任何地方使用应用实例了.
 
@@ -26,9 +48,9 @@ PyQt5.QtWidgets.QDesktopWidget 类, 用于描述系统桌面屏幕. 如: 用QDes
 
 PyQt5.QtWidgets.QLayout 类, 作为垂直布局器, 水平布局器, 表格布局器, 格栅布局器的父类存在.
 
-![QtWidgets.QLayout](./img/1_QtWidgets.QLayout.png)
+![QtWidgets.QLayout](./img/1-1-QtWidgets.QLayout.png)
 
-PyQt5.QtWidgets.QVBoxLayout 类, 垂直布局管理器, 可以使用addWidget向其中添加控件, 然后使用父窗口.addLayout(布局对象)添加布局
+PyQt5.QtWidgets.QVBoxLayout 类, 垂直布局管理器, PyQt5.QtWidgets.QHBoxLayout 类, 水平布局管理器. 二者都可以使用addWidget向其中添加控件, addLayout向其中添加其他布局管理器, 然后使用父窗口.setLayout(布局对象)设置为窗口的布局(只能设置一个)
 
 PyQt5.QtWidgets.QFormLayout 类, 表格布局管理器. 
   + addRow(可以使str, QWidget对象, Layout)
@@ -57,7 +79,7 @@ PyQt5.QtCore.QRegExp 对象, 用于设置正则表达式
 
 ### PyQt5.QtGui
 
-PyQt5.QtGui.QIcon 图标对象, 可以向支持图标的对象中设置图标, PyQt5.QtGui.QPixmap 图片对象, 可以向支持图片显示的对象中设置图片. 如果使用相对位置指定图片位置, 那相对位置的起始目录是整个项目的根目录.
+PyQt5.QtGui.QIcon 图标对象, 可以向支持图标的对象中设置图标, PyQt5.QtGui.QPixmap 图片对象, 可以向支持图片显示的对象中设置图片. 如果使用相对位置指定图片位置, 那相对位置的起始目录是整个项目的根目录. 支持常见的图片格式与gif动图,  svg矢量图.
 
 PyQt5.QtGui.QPalette 调色板对象, 可以设置支持setPalette的控件的颜色
 
@@ -67,6 +89,8 @@ PyQt5.QtGui.QFont 字体对象, 可以设置字体样式和大小, 用于放入�
 
 `PyQt5.QtWidgets.QWidget` 窗口控件, 简称控件, 是在PyQt中建立界面的主要元素. QWidget类是所有用户界面对象的基类或间接基类.
 
+![QtWidgets.QWidget](./img/1-2-QtWidgets.QWidget.png)
+
 ### 窗口坐标系统
 
 PyQt使用统一的坐标系统来定位窗口空间的位置和大.
@@ -75,7 +99,7 @@ PyQt使用统一的坐标系统来定位窗口空间的位置和大.
 
 原点, x轴, y轴围城的区域叫Client Area(客户区), 在客户区的周围则是标题栏(Window Title)和边框(Frame).
 
-![QWidget_Window](./img/2_QWidget_window.png)
+![QWidget_Window](./img/1-3-QWidget_window.png)
 
 **QWidget的成员函数可以分三类**
 
@@ -159,7 +183,7 @@ QWidget有两种常用的几何结构
 
 QMainWindow提供的布局如下图.
 
-![QMainWindow_Layout](./img/3_QMainWindow_Layout.png)
+![QMainWindow_Layout](./img/1-4-QMainWindow_Layout.png)
 
 **note:** QMainWindow不能设置布局(使用setLayout()方法), 因为其有自己的布局.
 
