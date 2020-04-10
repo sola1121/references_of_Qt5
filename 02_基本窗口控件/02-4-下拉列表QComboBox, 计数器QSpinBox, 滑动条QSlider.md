@@ -42,7 +42,7 @@ highlighted : 当选中一个已经选中的下拉选项时触发
 
 `PyQt5.QtWidgets.QSpinBox` , `PyQt5.QtWidgets.QDoubleSpinBox`, 计数器控件, 允许用户选择一个整数值, 通过单击向上/向下按钮或键盘上的上/下箭头来增加/减少当前显示的值, 当然用户也可以输入值.
 
-默认情况下, QSpinBox的取值范围是0~99, 步长1. QDoubleSpinBox默认精度两位小数, 范围0.0~99.99, 步长1.
+默认情况下, QSpinBox的取值范围是0-99, 步长1. QDoubleSpinBox默认精度两位小数, 范围0.0-99.99, 步长1.
 
 QSpinBox和QDoubleSpinBox都继承于PyQt5.QtWidgets.QAbstractSpinBox.
 
@@ -73,7 +73,7 @@ valueChanged : 每次单击向上/向下时触发, 会向槽函数发送更改�
     slider = QSlider(Qt.Horizontal)
     slider = QSlider(Qt.Vertical)
 
-QSlider的值范围为0~99的整数.
+QSlider的值范围为0-99的整数.
 
 ### QSlider常用方法
 
