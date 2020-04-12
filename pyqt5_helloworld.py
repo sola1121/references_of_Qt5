@@ -1,10 +1,11 @@
 import sys
-from PyQt5.QtWidgets import QWidget, QApplication, QPushButton
+from PyQt5.QtWidgets import QWidget, QApplication, QLabel
 
 class WinForm(QWidget):
-    def __init__(self, parent=None,):
+    def __init__(self, parent=None):
         super().__init__(parent=parent)
-        buton = QPushButton("Hello, world.", parent=self)
+        self.resize(200, 100)
+        buton = QLabel("Hello, world.", parent=self)
 
 
 if __name__ == "__main__":
