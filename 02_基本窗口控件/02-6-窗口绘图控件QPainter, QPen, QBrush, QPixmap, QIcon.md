@@ -26,6 +26,10 @@ Qt提供了四种处理图像数据的类: `PyQt5.QtGui.QImage`, `PyQt5.QtGui.QP
 
 `PyQt5.QtGui.QIcon` 用于处理不同模式和状态的可缩放图标.
 
+`PyQt5.QtGui.QPaintEvent` , 绘画事件, 其被发送到需要更新自身的小部件, 例如, 由于覆盖小部件被移动而导致部分小部件暴露时.
+
+![QPaintEvent](./img/6-1-QPaintEvent.png)
+
 ## QPainter
 
 `PyQt5.QtGui.QPainter` , 绘图控件, 其能在QWidget上执行绘图操作, 是一个绘制工具, 为大部分图形界面提供了高度优化的函数, 使QPainter类可以绘制从简单的直线到复杂的饼图.
@@ -176,7 +180,7 @@ QPainter类负责所有低级别的绘制, 所有绘制方法都要放在begin()
 
 `PyQt5.QtGui.QPixmap`用于绘图设备的图像显示, 它可以作为一个QPaintDevice对象(这也是其父类), 也可以加载到一个控件中, 通常是标签或按钮, 用于在标签或按钮上显示图像.
 
-![QPixmap](./img/6-1-QPixmap.png)
+![QPixmap](./img/6-2-QPixmap.png)
 
 QPixmap可以读取的图像文件类型有bmp, gif, jpg, jpeg, png, pbm, pgm, ppm, xbm, xpm等.
 
