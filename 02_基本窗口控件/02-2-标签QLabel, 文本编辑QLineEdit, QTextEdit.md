@@ -64,15 +64,15 @@ linkHovered : 当鼠标指针滑过标签中嵌入的超链接时, 需要用槽�
 
 ## 文本框类控件
 
-`PyQt5.QtWidgets.QLineEdit` 类, 单行文本框控件; `PyQt5.QtWidgets.QTextEdit` 类, 文本框控件.
+`PyQt5.QtWidgets.QLineEdit` 类, 单行文本框控件; 
 
     QWidget
-      |
-      +-QLineEdit
+        |
+        +-QLineEdit
 
-    QWidget
-      |
-      +-QTextEdit
+`PyQt5.QtWidgets.QTextEdit` 类, 文本框控件.
+
+![QTextEdit](./img/2-1-QTextEdit.png)
 
 ### QLineEdit
 

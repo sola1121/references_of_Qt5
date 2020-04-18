@@ -1,5 +1,24 @@
 # 笔记
 
+<!-- TOC -->
+
+- [笔记](#笔记)
+    - [补充](#补充)
+    - [QCalendarWidget](#qcalendarwidget)
+        - [QCalendarWidget常用方法](#qcalendarwidget常用方法)
+    - [QDateTimeEdit](#qdatetimeedit)
+        - [QDateTimeEdit常用方法](#qdatetimeedit常用方法)
+        - [QDateTimeEdit常用信号](#qdatetimeedit常用信号)
+        - [QDateTimeEdit的子类](#qdatetimeedit的子类)
+        - [初始化QDateTimeEdit](#初始化qdatetimeedit)
+        - [设置日期时间显示格式](#设置日期时间显示格式)
+        - [设置日期时间范围](#设置日期时间范围)
+        - [弹出日历](#弹出日历)
+        - [获取日期时间](#获取日期时间)
+        - [信号和槽函数](#信号和槽函数)
+
+<!-- /TOC -->
+
 ## 补充
 
 `PyQt5.QtCore.QDate` , 用于日期, 可以用于决定日期, 比较日期, 操纵日期.
