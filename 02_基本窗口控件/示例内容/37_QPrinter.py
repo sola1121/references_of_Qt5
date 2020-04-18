@@ -46,6 +46,7 @@ class MainWin(QMainWindow):
         toolbar_file.setMovable(True)
         toolbar_file.addAction(self.action_print)
 
+    # FIXME: 有问题, 真有问题
     def slot_print(self):
         """打印动作触发的槽函数, 用于打印, 
            会创建一个QPrinter给QPainter用作绘画"""
