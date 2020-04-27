@@ -1,5 +1,12 @@
 # 笔记
 
+<!-- TOC -->
+
+- [笔记](#笔记)
+    - [QPrinter](#qprinter)
+
+<!-- /TOC -->
+
 ## QPrinter
 
 `PyQt5.QtPrintSupport.QPrinter`

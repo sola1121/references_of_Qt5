@@ -5,7 +5,7 @@
 - [笔记](#笔记)
     - [QLabel](#qlabel)
         - [QLabel中常用的方法](#qlabel中常用的方法)
-        - [QLbel中常用的信号事件](#qlbel中常用的信号事件)
+        - [QLabel中常用的信号事件](#qlabel中常用的信号事件)
     - [文本框类控件](#文本框类控件)
         - [QLineEdit](#qlineedit)
             - [QLineEdit类中常用方法](#qlineedit类中常用方法)
@@ -57,7 +57,7 @@ setOpenExternalLinks() : 设置是否允许打开链接
 
 直接在QLabel初始化名称的时候使用"&"+单个字母 助记符就可以绑定一个快捷键, 运行是使用Alt+该单个字母就可以了. 以上还使用setBuddy()绑定一个控件, 这样使用快捷键后, 焦点就会切换到该控件上.
 
-### QLbel中常用的信号事件
+### QLabel中常用的信号事件
 
 linkActivated : 当单击标签中嵌入的超链接, 希望在新窗口中打开这个超连接时, setOpenExternalLinks属性必须设置为true  
 linkHovered : 当鼠标指针滑过标签中嵌入的超链接时, 需要用槽函数与这个信号事件进行绑定
@@ -112,10 +112,13 @@ setInputMask() : 设置掩码
 
 验证器需要先定义, 然后在放入控件中, 设置了验证器的输入框, 只能输入符合验证器定义的内容
 
-    reg = PyQt5.QtCore.QRegExp("[a-zA-Z0-9]+$")
-    validator_regex = PyQt5.QtWidgets.QLineEdit()
-    validator_regex = PyQt5.QtGui.QRegExpValidator(parent=None)
+    # 正则验证, 字母和数字
+    reg = QRegExp("[a-zA-Z0-9]+$")
+    validator_regex = QRegExpValidator(parent=self)
     validator_regex.setRegExp(reg)
+
+    # 设置验证器
+    linedit_regex.setValidator(validator_regex)
 
 **掩码字符**
 
