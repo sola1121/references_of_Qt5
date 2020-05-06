@@ -5,11 +5,13 @@
 - [笔记](#笔记)
     - [补充](#补充)
         - [窗口样式设置](#窗口样式设置)
+        - [QtConcurrent](#qtconcurrent)
         - [QProcess](#qprocess)
         - [QRunnable](#qrunnable)
         - [QThreadPool](#qthreadpool)
         - [QEventLoop](#qeventloop)
         - [信号](#信号)
+        - [其它](#其它)
     - [QTimer](#qtimer)
         - [QTimer常用方法](#qtimer常用方法)
         - [QTimer常用信号](#qtimer常用信号)
@@ -19,6 +21,7 @@
         - [QThread常用信号](#qthread常用信号)
         - [QThread使用](#qthread使用)
     - [事件处理](#事件处理)
+    - [如何选择](#如何选择)
 
 <!-- /TOC -->
 
@@ -32,6 +35,22 @@
 
     win = QWidget()
     win.setWindowFlags(Qt.SplashScreen|Qt.FramelessWindowHint)   # 模仿开机画面, 程序设置为无边框
+
+### QtConcurrent
+
+`PySide2.QtConcurrent.QtConcurrent`
+
+QtConcurrent名称空间提供一个高级的可以不使用低等级线程语言的能使用多线程程序的API.
+
+PySide2.QtConcurrent.QtConcurrent.ThreadFunctionResult
+
+PySide2.QtConcurrent.QtConcurrent.ReduceOption : This enum specifies the order of which results from the map or filter function are passed to the reduce function.
+
+常量
+
+QtConcurrent.UnorderedReduce : Reduction is done in an arbitrary order.  
+QtConcurrent.OrderedReduce : Reduction is done in the order of the original sequence.  
+QtConcurrent.SequentialReduce : Reduction is done sequentially: only one thread will enter the reduce function at a time. (Parallel   reduction might be supported in a future version of Qt Concurrent.)  
 
 ### QProcess
 
@@ -377,6 +396,14 @@ quit()
     thread.start()
     thread.wait()
 
+### 其它
+
+QSocketNotifier  
+QNetworkAccessManager  
+QIODevice.readyRead()
+
+这是一个替代技术, 替代有一个或多个线程在慢速网络执行阻塞读的情况. 只要响应部分的计算可以快速执行, 这种设计比在线程中实现的同步等待更好. 与线程相比这种设计更不容易出错且更节能(energy efficient). 在许多情况下也有性能优势. 
+
 ## QTimer
 
 `PyQt5.QtCore.QTimer`
@@ -494,7 +521,7 @@ finished : 当程序完成业务逻辑时, 从相关线程触发
 当在窗口中显示的数据比较简单时, 可以把读取数据的业务逻辑放在窗口的初始化代码中; 但是如果读取数据的时间比较长, 比如网络数据请求, 则可以把这部分逻辑放在QThread线程中, 实现界面的数据显示和数据读取的分离, 以满足MVC设计模式的要求.
 
     from PyQt5.QtCore import QThread, pyqtSignal
-    from PyQt5.QtWidgets import QApplication, QWidget, QListWidget, QPushButton, QGridLayout
+    from PyQt5.QtWidgets import QApplication, QWidget, ......
 
 
     class ThreadWorker(QThread):
@@ -554,7 +581,7 @@ finished : 当程序完成业务逻辑时, 从相关线程触发
                     pass
 
                 # 循环完成后触发自定义的事件
-                self.finish_signal.emit()
+                self.finish_signal.emit()   # self.finish_signal.emit(data) 也可传递值
 
 
     def countTime():
@@ -631,3 +658,16 @@ PyQt为事件处理提供了两种机制: 高级的信号与槽机制, 以及低
                 self.list_file.addItem(str_n)
                 QApplication.processEvents()   # 刷新界面, 效果不好
                 time.sleep(2)
+
+## 如何选择
+
+应该使用 Qt 线程的哪种技术？  
+有时候，你需要的不仅仅是在另一线程的上下文中运行一个函数。您可能需要有一个生存在另一个线程中的对象来为GUI线程提供服务。也许你想在另一个始终运行的线程中来轮询硬件端口并在有关注的事情发生时发送信号到GUI线程。Qt为开发多线程应用程序提供了多种不同的解决方案。解决方案的选择依赖于新线程的目的以及线程的生命周期。
+
+| 生命周期 | 开发任务 | 解决方案 |
+|-        |-       |-        |
+| 一次调用 |在另一个线程中运行一个函数，函数完成时退出线程|1.编写函数，使用QtConcurrent::run 运行它<br>2.派生QRunnable，使用QThreadPool::globalInstance()->start() 运行它<br>3.派生QThread，重新实现QThread::run() ，使用QThread::start() 运行它|
+| 一次调用 |需要操作一个容器中所有的项。使用处理器所有可用的核心。一个常见的例子是从图像列表生成缩略图。|QtConcurrent 提供了map()函你数来将操作应用到容器中的每一个元素，提供了fitler()函数来选择容器元素，以及指定reduce函数作为选项来组合剩余元素。|
+| 一次调用 |一个耗时运行的操作需要放入另一个线程。在处理过程中，状态信息需要发送会GUI线程。|使用QThread，重新实现run函数并根据需要发送信号。使用信号槽的queued连接方式将信号连接到GUI线程的槽函数。|
+| 持久运行 |生存在另一个线程中的对象，根据要求需要执行不同的任务。这意味着工作线程需要双向的通讯。|派生一个QObject对象并实现需要的信号和槽，将对象移动到一个运行有事件循环的线程中并通过queued方式连接的信号槽进行通讯。|
+| 持久运行 |生存在另一个线程中的对象，执行诸如轮询端口等重复的任务并与GUI线程通讯。|同上，但是在工作线程中使用一个定时器来轮询。尽管如此，处理轮询的最好的解决方案是彻底避免它。有时QSocketNotifer是一个替代。|
