@@ -287,7 +287,9 @@ windowStateChanged (oldState, newState)
     mdiArea.addSubWindow(subWindow1)
 
     subWindow2 = QMdiSubWindow()
-    mdiArea.addSubWindow(internalWidget2)
+    mdiArea.addSubWindow(
+        
+    )
     
     mainWindow = QMainWindow()
     mainWindow.setCentralWidget(mdiArea)
