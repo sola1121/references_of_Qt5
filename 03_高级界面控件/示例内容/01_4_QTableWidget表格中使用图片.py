@@ -43,7 +43,7 @@ class TableForm(QWidget):
             if m % 3 == 0 and m != 0:
                 row += 1
                 column = 0
-            file_path = os.path.join("03_高级界面控件/示例内容/sources", language_names[m]+"-96.png")
+            file_path = os.path.join("03_高级界面控件/示例内容/sources/images", language_names[m]+"-96.png")
             table_item = QTableWidgetItem()
             table_item.setFlags(Qt.ItemIsEnabled)   # 点击时, 图片能选中
             table_item.setIcon(QIcon(file_path))

@@ -109,6 +109,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+py36env/
 
 # Spyder project settings
 .spyderproject
@@ -130,3 +131,6 @@ dmypy.json
 
 # temp file
 tempCodeRunnerFile.py
+
+# vscode config
+.vscode/
