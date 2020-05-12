@@ -6,6 +6,8 @@
     - [补充](#补充)
         - [QUrl](#qurl)
         - [QDir](#qdir)
+        - [QWebChannel](#qwebchannel)
+        - [pyqtProperty](#pyqtproperty)
     - [QWebEngineView](#qwebengineview)
         - [QWebEngineView方法](#qwebengineview方法)
         - [QWebEngineView虚函数](#qwebengineview虚函数)
@@ -16,6 +18,9 @@
         - [QWebEnginePage方法](#qwebenginepage方法)
         - [QWebEnginePage虚函数](#qwebenginepage虚函数)
         - [QWebEnginePage信号](#qwebenginepage信号)
+    - [使用例子](#使用例子)
+        - [调用页面中的js脚本](#调用页面中的js脚本)
+        - [js调用PyQt代码](#js调用pyqt代码)
 
 <!-- /TOC -->
 
@@ -28,7 +33,6 @@ apt-get 安装
 pip 安装
 
     pip install PyQtWebEngine
-
 
 ## 补充
 
@@ -55,11 +59,11 @@ fromLocalFile()通过一个本地的文件路径构造一个QUrl. toLocalFile()�
 QUrl符合来自RFC3986(Uniform Resource Identifier: Generic Syntax)对URI定义, 并包含了RFC1738(Uniform Resource Locators)的协议拓展. QUrl中的大小写折叠规则符合RFC3491(Nameprep: A Stringprep Profile for Internationalized Domain Names (IDN)). 其也兼容来自freedesktop.org对文件URI定义, 提供基于UTF8的本地文件名的编码(需要IDN).
 
 **方法**  
-__eq__ (url) : 等于  
-__lt__ (url) : 小于  
-__ne__ (url) : 不等于  
-__reduce__ () : 减  
-__repr__ () : 报告  
+<raw>__eq__</raw> (url) : 等于  
+<raw>__lt__</raw> (url) : 小于  
+<raw>__ne__</raw> (url) : 不等于  
+<raw>__reduce__</raw> () : 减  
+<raw>__repr__</raw> () : 报告  
 adjusted (options) : 返回调整后的URL. 可以通过options来自定义.  
 authority ([options=QUrl.PrettyDecoded]) : 返回URL的权限(如果已经定义), 无则返回None.  
 clear () : 重置QUrl内容.  
@@ -184,11 +188,100 @@ Qt使用"/"作为一个普遍的目录分隔符, 同样的在URLs中"/"也作为
 
 `PyQt5.QtCore.QFile`, 提供了对文件的读取, 与写功能的接口.
 
+### QWebChannel
+
+`PyQt5.QtWebChannel.QWebChannel`
+
+![QWebChannel](./img/4-7-QtWebChannel.QWebChannel.png)
+
+QWebChannel填充C++应用和HTML/JavaScript应用之间的空隙. 通过派生一个QObject派生对象到一个QWebChannel并在HTML页面上使用qwebchannel.js, 一个可以透明地接触属性和公共插槽并且是QObject的方法. 不需要手动地传提示也不需要序列化的数据, 在C++这边的属性更新和信号的发送自动地被传送到后台远端正在运行的HTML客户端. 在客户端这一边, 一个JavaScript对象会被任何派生的C++ QObject对象创建. 其反应了C++对象的API, 因此可以直观的使用.
+
+C++ QWebChannel API 让和任何HTML客户端交流可行, 不论是本地的还是远程的都可以. 唯一的限制是HTML客户端通过qwebchannel.js支持JavaScript特性. 因为这样, 其基本可以和任何现代的HTML浏览器或独立的JavaScript运行环境进行交互, 如node.js.
+
+这儿同样也存在一个声明性的WebChannel API.
+
+**方法**  
+blockUpdates ()  
+deregisterObject (object) : 注销QWebChannel中的object. 远端的客户端将会从object收到destroyed信号.  
+registerObject (id, object) : 注册一个object到QWebChannel. 该对象的属性, 信号和公共方法将会被传递给远端的客户端. 在那, 会用指定的id构造一个对象  
+registerObjects (objects) : 注册一组对象到QWebChannel. 该对象的属性, 信号和可调用的公共方法将会被传递给远端的客户端. 在那, 一个在对象映射中使用标识符作为键的对象将会被构造.  
+registeredObjects () : 返回在远程客户端中注册的对象  
+setBlockUpdates (block)  
+
+**槽**  
+connectTo (transport) : 连接QWebChannel得到给定transport对象. transport对象之后会用来处理C++应用和一个远程的HTML客户端  
+disconnectFrom (transport) : 从transport断开与QWebChannel的连接.  
+
+**信号**  
+def blockUpdatesChanged (block)  
+
+### pyqtProperty
+
+`PyQt5.QtCore.pyqtProperty()`
+
+PyQt5.QtCore.pyqtProperty(type [, fget=None[, fset=None[, freset=None[, fdel=None[, doc=None[, designable=True[, scriptable=True[, stored=True[, user=False[, constant=False[, final=False[, notify=None]]]]]]]]]]]])
+
+type : 必填, 属性的类型  
+fget : 选填, 用于获取属性的值  
+fset : 选填, 用于设置属性的值  
+freset : 选填, 用于将属性的值重置为它的默认值  
+fdel : 选填, 用于删除属性  
+doc : 选填, 属性的文档字符串  
+designable : 选填, 设置Qt DESIGNABLE标志  
+scriptable : 选填, 设置Qt SCRIPTABLE标志  
+stored : 选填, 设置Qt STORED标志  
+user : 选填, 设置Qt USER标志  
+constant : 选填, 设置Qt CONSTANT 标志  
+final : 选填, 设置Qt FINAL标志  
+notify : 选填, 未绑定的通知信号  
+revision : 选填, 将版本导出到QML  
+
+可以使用pyqtProperty()函数给类的属性赋值, 作为参数传入类的setter和getter方法名.
+
+    from PyQt5.QtCore import QObject, pyqtProperty
+
+    class MyObject(QObject):
+        def __init__(self, inVal=20):
+            self.val = inVal
+        
+        def readVal(self):
+            print("readVal=%s" % self.val)
+            return self.val
+
+        def setVal(self):
+            print("setVal=%s" % self.val)
+            return self.val
+
+        ppVal = pyqtProperty(int, readVal, setVal)
+
+
+    if __name__ == "__main__":
+
+        obj = MyObject()
+
+        print("\n#1")
+        obj.ppVal = 10
+
+        print("\n#2)
+        print("obj.ppVal=%s" % obj.ppVal)
+        print("obj.readVal()=%s" obj.readVal())
+
+输出
+
+    #1
+    setVal=10
+
+    #2
+    readVal=10
+    obj.ppVal=10
+    readVal=10
+    obj.readVal()=10
+
 ## QWebEngineView
 
 `PyQt5.QtWebEngineWidgets.QWebEngineView`, 网页视图, 其是Qt WebEngine的主要组成控件. 可以在多种应用中展示Internet的内容. 使用的是Chromium内核, 是基于Content API封装的.
 
-![QtWebEngineWidgets.QtWebEngineView](./img/4-7-QtWebEngineWidgets.QWebEngineView.png)
+![QtWebEngineWidgets.QtWebEngineView](./img/4-8-QtWebEngineWidgets.QWebEngineView.png)
 
 一个页面可以使用load()方法载入. GET请求将会被用来加载URLs.
 
@@ -262,7 +355,7 @@ urlChanged (arg__1)
 
 `PyQt5.QtWebEngineWidgets.QWebEnginePage`
 
-![QtWebEngineWidgets.QWebEnginePage](./img/4-8-QtWebEngineWidgets.QWebEnginePage.png)
+![QtWebEngineWidgets.QWebEnginePage](./img/4-9-QtWebEngineWidgets.QWebEnginePage.png)
 
 一个网页引擎包容了HTML文档的内容, 导航链接的历史, 和动作.
 
@@ -490,3 +583,59 @@ titleChanged (title)
 urlChanged (url)  
 visibleChanged (visible)  
 windowCloseRequested ()  
+
+## 使用例子
+
+### 调用页面中的js脚本
+
+使用QWebEngineView的QWebEnginePage当前页面对象调用页面中的JavaScript脚本
+
+    view = QWebEngineView()
+    view.setHtml(html_file.read())
+
+
+    # 如果调用的js方法有返回值, 用于处理这个返回值
+    def js_callback(result):
+        print(result)
+
+
+    # 通过QWebEnginePage的runJavaScript(加载的页面中的js函数名, 用以处理js函数返回值的py函数调用指定的js函数, 并获取其返回值
+    def js_add_value():
+        view.page().runJavaScript("addValue()", js_callback)
+
+
+    # 触发按钮
+    button = QPushButton()
+    button.clicked.connect(js_add_value)
+
+### js调用PyQt代码
+
+JavaScript调用PyQt代码, 是指PyQt可以与加载的Web页面进行双向的数据交互. 首先, 使用 QWebEngineView加载Web页面后, 就可以获得页面中表单输入数据, 在Web页面中通过JavaScript代码收集用户提交的数据. 然后, 在Web页面中, JavaScript通过桥接连接方式传递数据给PyQt. 最后, PyQt接收到页面传递的数据, 经过业务处理后, 还可以把处理过的数据返给Web页面.
+
+**1.创建QWebChannel对象**
+
+创建QWebChannel对象, 注册一个需要桥接的对象, 以便Web页面的JavaScript使用
+
+    channel = QWebChannel()
+    my_object = MyShareObject()
+    channel.registerObject("bridge", my_object)
+    view.page().setWebChannel(channel)
+
+**2.创建共享数据的PyQt对象**
+
+共享对象是需要继承QObject的对象.
+
+    class MyShareObject(QWidget):
+        def __init__(self):
+            super().__init__()
+        
+        def set_str_value(self, s):
+            pass
+
+        # 需要定义对外发布的方法
+        str_value = pyqtProperty(s, fset=set_str_value)
+
+对外提供PyQt对象方法, 需要使用pyqtProperty()函数让其暴露出来
+
+在PyQt5中使用pyqtProperty()函数来定义PyQt对象中的属性, 这个函数的使用方式与标准Python模块中的property()函数相同. PyQt5.QtCore.pyqtProperty()函数
+

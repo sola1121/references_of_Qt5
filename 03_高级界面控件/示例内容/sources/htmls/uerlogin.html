@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>userlogin</title>
+</head>
+<body>
+    <form id="user-info" action="" method="post">
+        <label for="uname">用户名:</label>
+        <input type="text" name="uname" id="uname">
+        <br>
+        <label for="uemail">邮箱:</label>
+        <input type="email" name="uemail" id="uemail">
+        <br>
+        <label for="other">其他:</label>
+        <input type="text" name="other" id="other">
+        <br>
+        <button type="button">提交信息</button>
+    </form>
+</body>
+<script>
+    window.onload = function(){
+        submitBtn = document.querySelector("#user-info > button")
+        submitBtn.addEventListener("click", function(){
+            userInfoBtn()
+        }, false)
+    }
+
+
+    function userInfoBtn(){
+        var uname = document.querySelector("#uname"),
+            uemail = document.querySelector("#uemail"),
+            other = document.querySelector("#other")
+        var info = uname.value + "\n" +
+                   uemail.value + "\n" +
+                   other.value + "\n"
+        window.alert(info)
+    }
+
+
+    function addValue(){
+        var uname = document.querySelector("#uname"),
+            uemail = document.querySelector("#uemail"),
+            other = document.querySelector("#other")
+        uname.value = "some words here"
+        uemail.value = "email@mail.com"
+        other.value = "say some thing here"
+        return uname.value + "   " + uemail.value + "   " + other.value
+    }
+
+    
+    function removeValue(){
+        var uname = document.querySelector("#uname"),
+            uemail = document.querySelector("#uemail"),
+            other = document.querySelector("#other")
+        uname.value = ""
+        uemail.value = ""
+        other.value = ""
+    }
+
+
+</script>
+</html>
