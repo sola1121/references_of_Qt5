@@ -3,6 +3,8 @@
 <!-- TOC -->
 
 - [笔记](#笔记)
+    - [补充](#补充)
+        - [QDialogButtonBox](#qdialogbuttonbox)
     - [QDialog](#qdialog)
         - [QDialog常用方法](#qdialog常用方法)
         - [QDialog信号](#qdialog信号)
@@ -26,6 +28,94 @@
 对话框类控件QDialog, QMessageBox, QInputDialog, QFontDialog, QFileDialog
 
 QColorDialog, QErrorMessage, QProgressDialog, QWizard
+
+## 补充
+
+### QDialogButtonBox
+
+`PyQt5.QtWidgets.QDialogButtonBox` 类, 提供了在一个布局中适合对应平台风格的按钮们.
+
+    QtWidget
+        |
+        +-QDialogButtonBox
+
+**QDialogButton方法**
+
+addButton () : 添加按钮, 可在此指定按钮的角色  
+button (which) : 返回符合指定的按钮  
+buttonRole (button) : 返回指定按钮的角色  
+  + QDialogButtonBox.WinLayout, Use a policy appropriate for applications on Windows.
+  + QDialogButtonBox.MacLayout, Use a policy appropriate for applications on macOS.
+  + QDialogButtonBox.KdeLayout, Use a policy appropriate for applications on KDE.
+  + QDialogButtonBox.GnomeLayout, Use a policy appropriate for applications on GNOME.
+  + QDialogButtonBox.AndroidLayout, Use a policy appropriate for applications on Android.
+
+buttons () : 列表形式返回所有按钮  
+centerButtons ()  
+clear () : 删除所有在其中的按钮  
+removeButton (button) : 移除指定按钮  
+orientation ()  
+setCenterButtons (center)  
+setOrientation (orientation)  
+setStandardButtons (buttons)  
+standardButtons ()
+  + QDialogButtonBox.Ok, An “OK” button defined with the AcceptRole .
+  + QDialogButtonBox.Open, An “Open” button defined with the AcceptRole .
+  + QDialogButtonBox.Save, A “Save” button defined with the AcceptRole .
+  + QDialogButtonBox.Cancel, A “Cancel” button defined with the RejectRole .
+  + QDialogButtonBox.Close, A “Close” button defined with the RejectRole .
+  + QDialogButtonBox.Discard, A “Discard” or “Don’t Save” button, depending on the platform, defined with the DestructiveRole .
+  + QDialogButtonBox.Apply, An “Apply” button defined with the ApplyRole .
+  + QDialogButtonBox.Reset, A “Reset” button defined with the ResetRole .
+  + QDialogButtonBox.RestoreDefaults, A “Restore Defaults” button defined with the ResetRole .
+  + QDialogButtonBox.Help, A “Help” button defined with the HelpRole .
+  + QDialogButtonBox.SaveAll, A “Save All” button defined with the AcceptRole .
+  + QDialogButtonBox.Yes, A “Yes” button defined with the YesRole .
+  + QDialogButtonBox.YesToAll, A “Yes to All” button defined with the YesRole .
+  + <raw>QDialogButtonBox.No</raw>, A “No” button defined with the NoRole .
+  + QDialogButtonBox.NoToAll, A “No to All” button defined with the NoRole .
+  + QDialogButtonBox.Abort, An “Abort” button defined with the RejectRole .
+  + QDialogButtonBox.Retry, A “Retry” button defined with the AcceptRole .
+  + QDialogButtonBox.Ignore, An “Ignore” button defined with the AcceptRole .
+  + QDialogButtonBox.NoButton, An invalid button.  
+
+**信号**
+
+accepted ()  
+clicked (button)  
+helpRequested ()  
+rejected ()  
+
+对话框和消息框提供在布局中符合平台样式的按钮. 对于对话框不同的平台总是有不同的布局风格. QDialogButtonBox允许开发者添加按钮到其中, 将会自动生成符合平台布局的按钮样式.
+
+对于一个对话框的大多数按钮都符合某些特定的角色. 比如
++ 接受或者拒绝对话框
++ 询问帮助
++ 在对话框自身上表现动作(比如重设置字段, 或应用改变)
+
+也可以使用其他方法关闭对话框, 但这可能会造成一些破坏性的结果.
+
+大多数对话框都有一些可以看做标配的按钮(比如 Ok和Cancel按钮). 一些时候用一个标准的方法来创建这些按钮是很方便的.
+
+这里有很多使用QDialogButtonBox的方法. 其中之一就是自己创建按钮, 然后再添加到其中, 并指定角色.
+
+    findButton = QPushButton(self.tr("&Find"))
+    findButton.setDefault(True)
+
+    moreButton = QPushButton(self.tr("&More"))
+    moreButton.setCheckable(True)
+    moreButton.setAutoDefault(False)
+
+    buttonBox = QDialogButtonBox(Qt.Vertical)
+    buttonBox.addButton(findButton, QDialogButtonBox.ActionRole)
+    buttonBox.addButton(moreButton, QDialogButtonBox.ActionRole)
+
+另外地, QDialogButtonBox提供了少数标准按钮(比如 Ok, Cancel, Save). 这些按钮以标记的形式存在, 可以一次通过或运算定义多个.
+
+    self.buttonBox = QDialogButtonBox(QDialogButtonBox.Ok  | QDialogButtonBox.Cancel)
+
+    self.buttonBox.accepted.connect(self.accept)
+    self.buttonBox.rejected.connect(self.reject)
 
 ## QDialog
 
