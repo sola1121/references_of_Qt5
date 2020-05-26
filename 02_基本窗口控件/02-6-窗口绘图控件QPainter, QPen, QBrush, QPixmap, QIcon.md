@@ -47,9 +47,12 @@ drawPixmap() : 从图像文件提取Pixmap并将其显示在指定的位置
 drawPolygon() : 使用坐标数组绘制多边形  
 drawRect(x: int, y: int, w: int, h: int) : 已给定的宽度w和高度h从左上角坐标(x, y)绘制一个矩形  
 drawText() : 显示给定坐标处的文字  
-fillRext() : 使用QColor参数填充矩形  
+fillRect() : 使用QColor参数填充矩形  
+drawPixmap(x, y, w, h, pm, sx, sy, sw, sh)  
+drawImage(p, image, sr[, flags=Qt.AutoColor])  
 setBrush() : 设置画笔风格  
 setPen() : 设置用于绘制的笔的颜色, 大小和样式  
+transform()  
 
 ### 在PyQt5.QtCore.Qt中的预制画笔风格
 
