@@ -1,4 +1,4 @@
-# references_of_Qt5
+# references_of_PyQt5
 
 the note of study pyqt5, for memo.
 
