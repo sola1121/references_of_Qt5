@@ -1,4 +1,4 @@
-import os, hashlib, collections, filecmp
+import os, collections, hashlib
 
 from PySide6.QtWidgets import QMessageBox
 from PySide6.QtCore import QThread, QMutex, Signal
@@ -69,14 +69,17 @@ class CopyThread(QThread):
                         self.status_signal.emit(self.copy_files)
                 
                 # 复制完成后比较两个文件的内容
-                if filecmp.cmp(src_file, dst_file) != True:
+                src_file_md5 = caculate_md5(src_file)
+                dst_file_md5 = caculate_md5(dst_file)
+                if src_file_md5 != dst_file_md5:
                     self.copy_files[src_file] = -1.0
                 else:
                     self.copy_files[src_file] = 1.0
                 self.status_signal.emit(self.copy_files)
-
+                
             # 解锁
             self.mutex.unlock()
+
         except Exception as ex:
             for src_file, process in self.copy_files.items():
                 if process < 1.0:
@@ -104,3 +107,18 @@ class CopyThread(QThread):
         # 退出当前的线程
         self.quit()
         self.wait()
+
+
+def caculate_md5(file_path: str) -> str:
+    # 计算一个指定路径的文件的md5
+    hash_md5 = hashlib.md5()
+    ret_md5 = str()   # 将要返回的文件md5值
+
+    with open(file_path, 'rb') as fred:
+        while True:
+            data = fred.read(1024 * 1024)
+            if not data:
+                break
+            hash_md5.update(data)
+        ret_md5 = hash_md5.hexdigest()
+    return ret_md5
