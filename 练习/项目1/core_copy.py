@@ -25,7 +25,6 @@ class CopyThread(QThread):
         self.mutex = mutex
         self.running = True   # 单个文件是否继续复制
 
-
     def run(self):
         """复制线程运行"""
         try:
@@ -73,10 +72,11 @@ class CopyThread(QThread):
                 dst_file_md5 = caculate_md5(dst_file)
                 if src_file_md5 != dst_file_md5:
                     self.copy_files[src_file] = -1.0
+                    os.remove(dst_file)   # 删除复制失败的文件
                 else:
                     self.copy_files[src_file] = 1.0
                 self.status_signal.emit(self.copy_files)
-                
+            
             # 解锁
             self.mutex.unlock()
 
@@ -97,15 +97,17 @@ class CopyThread(QThread):
     def stop(self):
         """复制线程退出"""
         # 删除没有复制完成的文件
+        self.mutex.lock()
         for src_file, process in self.copy_files.items():
             if process < 1.0:
-                dst_file = os.path.join(self.target_address ,os.path.basename(src_file))
+                dst_file = os.path.join(self.target_address, os.path.basename(src_file))
                 if os.path.exists(dst_file):
                     os.remove(dst_file)
         # 停止复制
         self.running = False
         # 退出当前的线程
         self.quit()
+        self.mutex.unlock()
         self.wait()
 
 

@@ -69,14 +69,21 @@ class Ui_MainWindow(QWidget):
 
     def choice_file(self):
         """选择文件"""
-        source_file = QFileDialog().getOpenFileName()
-        if source_file[0] == '':
+        source_files = QFileDialog().getOpenFileNames()
+
+        if source_files[0] == []:
             QMessageBox.warning(self, "警告", "未选择文件.")
-        elif source_file[0] in self.copy_files.keys():
-            QMessageBox.warning(self, "警告", "请勿重复选择文件.")
-        else:
-            self.copy_files[source_file[0]] = 0.0
-            self.sourfile_desc.setText(format_textedit(self.copy_files))
+            return
+
+        for source_file in source_files[0]:
+            if source_file in self.copy_files.keys():
+                warning_format = f"请勿重复选择文件, {source_file} 已选择."
+                QMessageBox.warning(self, f"警告", warning_format)
+                return 
+
+        for source_file in source_files[0]:
+            self.copy_files[source_file] = 0.0
+        self.sourfile_desc.setText(format_textedit(self.copy_files))
 
     def set_target_address(self):
         """设置目标目录 """
@@ -111,10 +118,15 @@ class Ui_MainWindow(QWidget):
         self.sourfile_desc.setText(format_textedit(self.copy_files))
 
         # 线程的创建
-        if self.copy_files is None or self.target_address == "":
-            QMessageBox.critical(self, "错误", "请设置源文件和目标地址.")
+        if not self.copy_files:
+            QMessageBox.critical(self, "错误", "请设置源文件.")
+            self.sourfile_desc.setText("源文件地址")
+            self.buttons_enable(True)
+        elif self.target_address == "":
+            QMessageBox.critical(self, "错误", "请设置目标地址.")
             self.buttons_enable(True)
         else:
+            # TODO: 改造为线程池
             # 创建线程, 进行复制操作
             self.copy_thread = CopyThread(self.copy_files, self.target_address, mutex)
             self.copy_thread.status_signal.connect(self.update_copy_progress)   # 运行中的自定义信号
@@ -124,8 +136,13 @@ class Ui_MainWindow(QWidget):
     
     def stop_copy_file(self):
         """停止复制操作"""
-        self.stop_btn.setEnabled(False)
+        if self.copy_thread is None:
+            return
+        self.sourfile_desc.setText(format_textedit(self.copy_thread.copy_files))
+        print("停止中的内容：",  self.copy_thread.copy_files)
+        self.copy_files = self.copy_thread.copy_files
         self.copy_thread.stop()
+        self.stop_btn.setEnabled(False)
 
     def thread_finished(self):
         """线程完成时"""
@@ -136,6 +153,9 @@ class Ui_MainWindow(QWidget):
 
     def update_copy_progress(self, odit: collections.OrderedDict):
         """线程运行时, 复制的进度"""
+        # 更新字典
+        self.copy_files = odit
+
         # 更新TextEdit
         self.sourfile_desc.setText(format_textedit(odit))
 
@@ -148,6 +168,22 @@ class Ui_MainWindow(QWidget):
         self.tagefile_btn.setEnabled(bl)
         self.restfile_btn.setEnabled(bl)
         self.start_btn.setEnabled(bl)
+
+    def closeEvent(self, event):
+        """重载关闭窗口事件"""
+        reply = QMessageBox.question(self, "警告", "是否关闭当前窗口, 可能会导致进行中的复制操作失败.",
+                                     QMessageBox.Yes|QMessageBox.No, QMessageBox.No)
+
+        if reply == QMessageBox.Yes:
+            if self.copy_files.items() is not None:
+                for src_file, process in self.copy_files.items():
+                    if process < 1.0:
+                        dst_file = os.path.join(self.target_address, os.path.basename(src_file))
+                        if os.path.exists(dst_file):
+                            os.remove(dst_file)
+            event.accept()
+        else:
+            event.ignore()
 
 
 def format_textedit(odit: collections.OrderedDict) -> str:
